@@ -8,3 +8,7 @@ export function extractImageUrlsFromLocation(location: Location) {
 
     return [...new Set(targetsString.split(',').filter(u => u))]
 }
+
+export const isDev = location.hostname === 'localhost'
+
+export const prefixUrl = isDev ? 'http://localhost:3000/api' : '/api'

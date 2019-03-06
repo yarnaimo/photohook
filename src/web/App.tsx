@@ -14,83 +14,78 @@ import Drawer, {
 } from '@material/react-drawer'
 import List, { ListItem, ListItemText } from '@material/react-list'
 import MaterialIcon from '@material/react-material-icon'
+import { Snackbar } from '@material/react-snackbar'
 import TopAppBar, { TopAppBarFixedAdjust } from '@material/react-top-app-bar'
 import { Body1, Caption } from '@material/react-typography'
-import { auth } from 'firebase/app'
-import React, { useEffect, useState } from 'react'
-import { ulid } from 'ulid'
+import { is } from '@yarnaimo/rain'
+import React, { useEffect, useMemo, useState } from 'react'
+import { getAuth, init } from './client'
+import { AlbumSelectionDialog } from './components/AlbumSelectDialog'
 import { RoundedCheckbox } from './components/RoundedCheckbox'
 import { SelectableImageGrid } from './components/SelectableImageGrid'
 import { block, section } from './css'
-import { authProvider } from './firebase'
+import { GlobalStateProvider, useGlobalState } from './state'
 import { extractImageUrlsFromLocation } from './utils'
 
-async function download(urls: string[]) {
-    console.log(urls)
-
-    for (const url of urls) {
-        const blob = await fetch(url, { mode: 'no-cors' }).then(res => res.blob())
-        const objectURL = URL.createObjectURL(blob)
-
-        const a = document.createElement('a')
-        a.href = objectURL
-        a.download = ulid()
-        a.dispatchEvent(new MouseEvent('click'))
-    }
-
-    // let delay = 0
-
-    // urls.forEach(url => {
-    //     const a = document.createElement('a')
-    //     a.href = url
-    //     a.download = ulid()
-    //     setTimeout(() => a.dispatchEvent(new MouseEvent('click')), 100 * ++delay)
-    // })
-}
-
-export const App: React.FC = () => {
-    const [token, setToken] = useState<string>()
-    const [user, setUser] = useState<firebase.User>()
+const DrawerContainer: React.FC = () => {
+    const [user, setUser] = useGlobalState('user')
 
     async function login() {
-        const result = await auth().signInWithPopup(authProvider)
-
-        if (!result.credential) {
-            return
-        }
-
-        if (result.user) {
-            setUser(result.user)
-        }
-        const _token = (result.credential as any).accessToken as string
-        setToken(_token)
+        await getAuth().signIn()
     }
 
     async function logout() {
-        await auth().signOut()
-        setUser(undefined)
-        setToken(undefined)
+        await getAuth().signOut()
     }
 
-    const [{ urls, selection }, setImageList] = useState({
-        urls: [] as string[],
-        selection: [] as number[],
-    })
-    const setSelection = (newSelection: number[]) => setImageList({ urls, selection: newSelection })
-    const selectedUrls = () => urls.filter((_, i) => selection.includes(i))
+    useEffect(() => {
+        window.gapi.load('client:auth2', async () => {
+            console.log('gapi client loaded')
+            init(setUser)
+        })
+    }, [])
+
+    const [urls, setUrls] = useState([] as string[])
+    const [selection, setSelection] = useState([] as boolean[])
+
+    useEffect(() => {
+        setSelection(urls.map((_, i) => (is.boolean(selection[i]) ? selection[i] : true)))
+    }, [urls])
 
     useEffect(() => {
         const urls = extractImageUrlsFromLocation(location)
-        setImageList({ urls, selection: urls.map((_, i) => i) })
+        setUrls(urls)
     }, [])
 
+    const selectedUrls = useMemo(() => urls.filter((_, i) => selection[i]), [urls, selection])
+
+    async function upload(albumId?: string) {
+        if (!user) {
+            return
+        }
+
+        setSnackbarState(true)
+        user.client.post('mediaItems', { json: { albumId, urls: selectedUrls } })
+    }
+
     const [drawerState, setDrawerState] = useState(false)
+    const [dialogState, setDialogState] = useState(false)
+
+    const [snackbarState, setSnackbarState] = useState(false)
 
     return (
         <div className="drawer-container">
+            {snackbarState && (
+                <Snackbar
+                    open={snackbarState}
+                    onClose={() => setSnackbarState(false)}
+                    message="アップロードしています..."
+                />
+            )}
+
             <Drawer modal open={drawerState} onClose={() => setDrawerState(false)}>
                 <DrawerHeader>
-                    <DrawerTitle tag="h2">{user ? user.displayName : ''}</DrawerTitle>
+                    <DrawerTitle tag="h2">{user ? user.name : ''}</DrawerTitle>
                     <DrawerSubtitle>{user ? user.email : ''}</DrawerSubtitle>
                 </DrawerHeader>
 
@@ -123,7 +118,13 @@ export const App: React.FC = () => {
                 />
 
                 <TopAppBarFixedAdjust css={{ maxWidth: 900, margin: 'auto' }}>
-                    {!token && (
+                    <AlbumSelectionDialog
+                        state={dialogState}
+                        setState={setDialogState}
+                        upload={upload}
+                    />
+
+                    {user === null && (
                         <section css={section}>
                             <Body1>
                                 <Button
@@ -149,16 +150,16 @@ export const App: React.FC = () => {
                     <section css={section}>
                         <Body1 css={{ display: 'flex', alignItems: 'center' }}>
                             <RoundedCheckbox
-                                checked={selection.length === urls.length}
+                                checked={selectedUrls.length === urls.length}
                                 onClick={() => {
-                                    if (selection.length === urls.length) {
-                                        setSelection([])
+                                    if (selectedUrls.length === urls.length) {
+                                        setSelection(urls.map(() => false))
                                     } else {
-                                        setSelection(urls.map((_, i) => i))
+                                        setSelection(urls.map(() => true))
                                     }
                                 }}
                             />
-                            <span>{`${selection.length} / ${urls.length} 枚`}</span>
+                            <span>{`${selectedUrls.length} / ${urls.length} 枚`}</span>
                         </Body1>
 
                         <SelectableImageGrid
@@ -172,10 +173,10 @@ export const App: React.FC = () => {
                         <Body1 css={{ textAlign: 'right' }}>
                             <Button
                                 icon={<MaterialIcon icon="cloud_upload" />}
-                                disabled={!selection.length || !token}
+                                disabled={!selectedUrls.length || !user}
                                 outlined
                                 // unelevated
-                                onClick={() => download(selectedUrls())}
+                                onClick={() => setDialogState(true)}
                             >
                                 Google フォトにアップロード
                             </Button>
@@ -186,3 +187,9 @@ export const App: React.FC = () => {
         </div>
     )
 }
+
+export const App: React.FC = () => (
+    <GlobalStateProvider>
+        <DrawerContainer />
+    </GlobalStateProvider>
+)

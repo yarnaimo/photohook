@@ -1,83 +1,76 @@
-import { asError, bufferFromUrlOrDataUrl, is, isnot, t } from '@yarnaimo/rain'
-import { json, send } from 'micro'
-import { post, router } from 'microrouter'
+import { bufferFromUrlOrDataUrl, is, isnot, t } from '@yarnaimo/rain'
+import { post } from 'microrouter'
 import pLimit from 'p-limit'
 import { Album } from '../models/Album'
-import { photosClient } from './photos-client'
+import { toChunks } from '../utils'
+import { photos } from './photos'
+import { typed } from './TypedHandler'
 import { setDateTagIfNotExists } from './utils.exif'
-import { authHeaders } from './utils.http'
 
-export const mediaItems = router(
-    post('/mediaItems', async (req, res) => {
-        const headers = authHeaders(req)
-
-        if (is.error(headers)) {
-            return send(res, 401, '認証に失敗しました')
-        }
-
-        const Request = t.type({
-            albumId: Album.props.id,
-            urls: t.array(t.string),
-            dateTag: t.string,
-        })
-
-        const v = await json(req).then(res => Request.decode(res))
-
-        if (v.isLeft()) {
-            return send(res, 400, 'リクエストの形式が無効です')
-        }
-
-        const limit = pLimit(8)
-
-        const newMediaItemFn = (url: string) => async () => {
+export const postMediaItem = typed(
+    post,
+    '/mediaItems',
+    t.type({
+        albumId: t.union([Album.props.id, t.undefined]),
+        urls: t.array(t.string),
+        dateTag: t.string,
+    }),
+    t.type({
+        creationCount: t.number,
+    }),
+    async (req, res, headers, v) => {
+        const createNewMediaItem = async (url: string) => {
             const dataToUpload = await bufferFromUrlOrDataUrl(url)
 
             if (is.error(dataToUpload)) {
                 return
             }
 
-            const bufferToUpload = setDateTagIfNotExists(dataToUpload.buffer, v.value.dateTag)
+            const bufferToUpload = setDateTagIfNotExists(dataToUpload.buffer, v.dateTag)
 
-            const uploaded = await photosClient
-                .post('uploads', {
-                    body: bufferToUpload,
-                    headers: {
-                        ...headers,
-                        'content-type': 'application/octet-stream',
-                        'X-Goog-Upload-Protocol': 'raw',
-                    },
-                })
-                .catch(asError)
+            const uploadedItem = await photos.uploadItem(headers, bufferToUpload)
 
-            if (is.error(uploaded)) {
+            if (is.error(uploadedItem)) {
                 return
             }
 
             return {
                 description: url,
                 simpleMediaItem: {
-                    uploadToken: uploaded.body,
+                    uploadToken: uploadedItem.body,
                 },
             }
         }
 
-        const newMediaItems = (await Promise.all(
-            v.value.urls.map(url => limit(newMediaItemFn(url)))
-        )).filter(isnot.nullish)
+        const limit = pLimit(8)
+        const tasks = v.urls.map(url => limit(() => createNewMediaItem(url)))
 
-        for (const i of [...Array(Math.ceil(newMediaItems.length / 50)).keys()]) {
-            const { albums } = await photosClient
-                .post('mediaItems:batchCreate', {
-                    headers,
-                    json: true,
-                    body: {
-                        albumId: v.value.albumId,
-                        newMediaItems,
-                    },
-                })
-                .then(res => res.body)
+        const newMediaItems = (await Promise.all(tasks)).filter(isnot.nullish)
+
+        let creationCount = 0
+
+        for (const chunk of toChunks(newMediaItems, 50)) {
+            const creationResponse = await photos.createMediaItems(headers, chunk, v.albumId)
+
+            if (is.error(creationResponse) || creationResponse.isLeft()) {
+                continue
+            }
+
+            creationResponse.value.newMediaItemResults.forEach(result => {
+                if (!result.mediaItem) {
+                    return
+                }
+
+                creationCount++
+            })
         }
 
-        send(res, 200, 'albums')
-    })
+        return { creationCount }
+    }
 )
+
+export const CMediaItemsResponse = t.type({
+    creationCount: t.number,
+})
+
+export const mediaItems = [postMediaItem]

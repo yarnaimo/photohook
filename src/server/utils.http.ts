@@ -1,9 +1,13 @@
 import { ServerRequest } from 'microrouter'
 
+export interface AuthHeaders {
+    authorization?: string
+}
+
 export function authHeaders(req: ServerRequest) {
-    if (!req.headers.Authorization) {
+    if (!req.headers.authorization) {
         return new Error()
     }
 
-    return { Authorization: req.headers.Authorization as string }
+    return { authorization: req.headers.authorization as string }
 }

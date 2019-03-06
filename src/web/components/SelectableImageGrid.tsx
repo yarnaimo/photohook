@@ -5,8 +5,8 @@ import { RoundedCheckbox } from './RoundedCheckbox'
 
 interface Props {
     urls: string[]
-    selection: number[]
-    onChange: (indexes: number[]) => void
+    selection: boolean[]
+    onChange: (newSelection: boolean[]) => void
 }
 
 export const SelectableImageGrid: React.FC<Props> = ({ urls, selection, onChange }) => {
@@ -21,7 +21,7 @@ export const SelectableImageGrid: React.FC<Props> = ({ urls, selection, onChange
             }}
         >
             {[...urls].map((url, i) => {
-                const isChecked = selection.includes(i)
+                const isChecked = selection[i]
 
                 return (
                     <li
@@ -37,13 +37,11 @@ export const SelectableImageGrid: React.FC<Props> = ({ urls, selection, onChange
                                 paddingTop: '100%',
                             },
                         }}
-                        onClick={() => {
-                            if (isChecked) {
-                                onChange(selection.filter(index => index !== i))
-                            } else {
-                                onChange([...selection, i])
-                            }
-                        }}
+                        onClick={() =>
+                            onChange(
+                                selection.map((value, sIndex) => (sIndex === i ? !value : value))
+                            )
+                        }
                     >
                         <div css={{ position: 'absolute', zIndex: 1, top: 8, left: 8 }}>
                             <RoundedCheckbox checked={isChecked} />
