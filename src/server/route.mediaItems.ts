@@ -13,7 +13,7 @@ export const postMediaItem = typed(
     t.type({
         albumId: t.union([Album.props.id, t.undefined]),
         urls: t.array(t.string),
-        dateTag: t.string,
+        dateTag: t.union([t.string, t.undefined]),
     }),
     t.type({
         creationCount: t.number,
@@ -28,7 +28,12 @@ export const postMediaItem = typed(
 
             const bufferToUpload = setDateTagIfNotExists(dataToUpload.buffer, v.dateTag)
 
-            const uploadedItem = await photos.uploadItem(headers, bufferToUpload)
+            const uploadedItem = await photos.uploadItem(
+                headers,
+                bufferToUpload,
+                url,
+                dataToUpload.mimetype
+            )
 
             if (is.error(uploadedItem)) {
                 return

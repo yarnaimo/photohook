@@ -1,6 +1,10 @@
 import modifyExif from 'modify-exif'
 
-export function setDateTagIfNotExists(buffer: Buffer, dateTag: string) {
+export function setDateTagIfNotExists(buffer: Buffer, dateTag?: string) {
+    if (!dateTag) {
+        return buffer
+    }
+
     try {
         return modifyExif(buffer, ({ Exif }) => {
             if (Exif['36867']) {

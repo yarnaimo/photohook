@@ -1,0 +1,124 @@
+// @import 'material-components-web/dist/material-components-web.min.css';
+@import '@material/react-drawer/index.scss';
+@import '@material/react-list/index.scss';
+@import '@material/react-material-icon/index.scss';
+@import '@material/react-top-app-bar/index.scss';
+@import '@material/react-button/index.scss';
+@import '@material/react-checkbox/index.scss';
+@import '@material/react-snackbar/index.scss';
+@import '@material/react-text-field/index.scss';
+@import '@material/react-typography/index.scss';
+@import '@material/react-dialog/index.scss';
+@import '@material/react-radio/index.scss';
+@import 'material-colors/dist/colors.var.css';
+
+:root {
+    --mdc-theme-primary: #e8585f;
+    --mdc-theme-secondary: #85c7c3;
+    // --mdc-theme-background: #fff;
+    // --mdc-theme-surface: #fff;
+    // --mdc-theme-error: #b00020;
+    // --mdc-theme-on-primary: #fff;
+    // --mdc-theme-on-secondary: #fff;
+    // --mdc-theme-on-surface: #000;
+    // --mdc-theme-on-error: #fff;
+    // --mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
+    // --mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
+    // --mdc-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
+    // --mdc-theme-text-disabled-on-background: rgba(0, 0, 0, 0.38);
+    // --mdc-theme-text-icon-on-background: rgba(0, 0, 0, 0.38);
+    // --mdc-theme-text-primary-on-light: rgba(0, 0, 0, 0.87);
+    // --mdc-theme-text-secondary-on-light: rgba(0, 0, 0, 0.54);
+    // --mdc-theme-text-hint-on-light: rgba(0, 0, 0, 0.38);
+    // --mdc-theme-text-disabled-on-light: rgba(0, 0, 0, 0.38);
+    // --mdc-theme-text-icon-on-light: rgba(0, 0, 0, 0.38);
+    // --mdc-theme-text-primary-on-dark: #fff;
+    // --mdc-theme-text-secondary-on-dark: hsla(0, 0%, 100%, 0.7);
+    // --mdc-theme-text-hint-on-dark: hsla(0, 0%, 100%, 0.5);
+    // --mdc-theme-text-disabled-on-dark: hsla(0, 0%, 100%, 0.5);
+    // --mdc-theme-text-icon-on-dark: hsla(0, 0%, 100%, 0.5);
+}
+
+:root {
+    --space-unit: 16px;
+    --space-min: calc(0.125 * var(--space-unit));
+    --space-xxs: calc(0.25 * var(--space-unit));
+    --space-xs: calc(0.5 * var(--space-unit));
+    --space-sm: calc(0.75 * var(--space-unit));
+    --space-md: calc(1.25 * var(--space-unit));
+    --space-lg: calc(2 * var(--space-unit));
+    --space-xl: calc(3.25 * var(--space-unit));
+    --space-xxl: calc(5.25 * var(--space-unit));
+    --space-side: 10px;
+}
+
+// @import 'node_modules/@material/react-chips/index';
+// @import 'node_modules/@material/react-top-app-bar/index';
+// @import 'node_modules/@material/react-text-field/index';
+// @import 'node_modules/@material/react-button/index';
+
+// // web
+// @import 'node_modules/@material/typography/mdc-typography';
+// @import 'node_modules/@material/theme/mdc-theme';
+
+// // mixins
+// @import 'node_modules/@material/top-app-bar/mixins';
+// @import 'node_modules/@material/chips/mixins';
+// @import 'node_modules/@material/chips/variables';
+// @import 'node_modules/@material/shape/mixins';
+
+* {
+    box-sizing: border-box;
+    outline: none;
+}
+
+html {
+    max-width: 100vw;
+    font-family: Ubuntu, sans-serif;
+    overflow-y: scroll;
+}
+
+body,
+html {
+    padding: 0;
+    margin: 0;
+}
+
+#root,
+body {
+    display: block;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+.mdc-top-app-bar__row {
+    justify-content: center;
+}
+
+.mdc-button__label {
+    text-transform: none;
+}
+
+.mdc-list-item__text {
+    pointer-events: none;
+}
+
+section {
+    // max-width: 600px;
+    // padding: 0 var(--space-side) 20px;
+}
+
+// .mdc-image-list {
+//     margin: 0 calc(var(--space-min) * -1 - var(--space-side));
+// }
+
+// .mdc-image-list__item {
+//     flex-basis: calc(100% / 4 - var(--space-xxs));
+//     margin: var(--space-min);
+// }
+
+// @media (max-width: 599px) {
+//     .mdc-image-list__item {
+//         flex-basis: calc(100% / 3 - var(--space-xxs));
+//     }
+// }

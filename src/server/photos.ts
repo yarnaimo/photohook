@@ -1,6 +1,9 @@
 import { asError, got, t } from '@yarnaimo/rain'
+import { DateTime } from 'luxon'
+import { extension } from 'mime-types'
 import { AlbumCreationResponse, AlbumList } from '../models/Album'
 import { MediaItemCreationRequest, MediaItemCreationResponse } from '../models/MediaItem'
+import { filenamifyUrl } from './utils'
 import { AuthHeaders } from './utils.http'
 
 const baseUrl = 'https://photoslibrary.googleapis.com/v1'
@@ -32,7 +35,16 @@ async function createAlbum({ authorization }: AuthHeaders, title: string) {
         .catch(asError)
 }
 
-async function uploadItem({ authorization }: AuthHeaders, buffer: Buffer) {
+async function uploadItem(
+    { authorization }: AuthHeaders,
+    buffer: Buffer,
+    url: string,
+    mimetype?: string
+) {
+    const date = DateTime.local().toFormat('yyyyMMdd')
+    const namifiedUrl = filenamifyUrl(url)
+    const suffix = mimetype ? `.${extension(mimetype)}` : ''
+
     return photosClient
         .post('uploads', {
             body: buffer,
@@ -40,6 +52,7 @@ async function uploadItem({ authorization }: AuthHeaders, buffer: Buffer) {
                 authorization,
                 'content-type': 'application/octet-stream',
                 'X-Goog-Upload-Protocol': 'raw',
+                'X-Goog-Upload-File-Name': `${date}-${namifiedUrl}${suffix}`,
             },
         })
         .catch(asError)

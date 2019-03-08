@@ -3,7 +3,6 @@ import { t } from '@yarnaimo/rain'
 export const MediaItem = t.type({
     id: t.string,
     productUrl: t.string,
-    baseUrl: t.string,
     mediaMetadata: t.any,
 })
 
