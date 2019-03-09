@@ -9,7 +9,7 @@ import Drawer, {
 } from '@material/react-drawer'
 import List, { ListItem, ListItemText } from '@material/react-list'
 import MaterialIcon from '@material/react-material-icon'
-import TopAppBar from '@material/react-top-app-bar'
+import TopAppBar, { TopAppBarFixedAdjust } from '@material/react-top-app-bar'
 import React, { useEffect, useState } from 'react'
 import { Main } from './AppMain'
 import { getAuth, init } from './client'
@@ -70,7 +70,9 @@ const DrawerContainer: React.FC = () => {
                     }
                     actionItems={[<MaterialIcon key="item" icon="add_photo_alternate" />]}
                 />
-                <Main login={login} />
+                <TopAppBarFixedAdjust css={{ maxWidth: 900, margin: 'auto' }}>
+                    <Main login={login} />
+                </TopAppBarFixedAdjust>
             </DrawerAppContent>
         </div>
     )

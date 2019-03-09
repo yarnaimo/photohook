@@ -5,7 +5,6 @@ import Checkbox from '@material/react-checkbox'
 import MaterialIcon from '@material/react-material-icon'
 import { Snackbar } from '@material/react-snackbar'
 import TextField, { Input } from '@material/react-text-field'
-import { TopAppBarFixedAdjust } from '@material/react-top-app-bar'
 import { Body1, Caption } from '@material/react-typography'
 import { is, t } from '@yarnaimo/rain'
 import { DateTime } from 'luxon'
@@ -62,8 +61,92 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
 
     const [snackbarMessages, setSnackbarMessages] = useState([] as string[])
 
+    const codeRef = React.createRef<HTMLElement>()
+    const code = ''
+    function copy() {
+        console.log(codeRef.current)
+
+        if (!codeRef.current) {
+            return
+        }
+
+        const range = document.createRange()
+        range.selectNodeContents(codeRef.current)
+
+        const selection = window.getSelection()
+        selection.removeAllRanges()
+        selection.addRange(range)
+
+        document.execCommand('copy')
+
+        selection.removeAllRanges()
+    }
+
+    if (!urls.length) {
+        return (
+            <React.Fragment>
+                <section css={section}>
+                    <p>
+                        Photohook は Web ページに含まれる画像をブックマークレット経由で{' '}
+                        <b>Google フォトに一括アップロード</b>するツールです。
+                    </p>
+                </section>
+                <section css={section}>
+                    <h3>⭐️ ブックマークレットの登録方法</h3>
+                    <ol>
+                        <li>
+                            下のボタンで<b>コードをコピー</b>する
+                            <code ref={codeRef} css={{ overflow: 'auto' }}>
+                                javascript:{code}
+                            </code>
+                            <Button css={block} dense unelevated onClick={copy}>
+                                コピー
+                            </Button>
+                        </li>
+                        <li>
+                            このページを<b>ブックマークに登録</b>する
+                        </li>
+                        <li>
+                            登録したブックマークの編集画面を開き、その{' '}
+                            <b>URL を 1. でコピーしたコードに置き換えて保存</b>する
+                        </li>
+                    </ol>
+                </section>
+                <section css={section}>
+                    <h3>ℹ️ 使い方</h3>
+                    <ol>
+                        <li>保存したい画像がある Web ページを開く</li>
+                        <li>
+                            登録したブックマークレットを起動する
+                            <ul>
+                                <li>
+                                    Chrome など
+                                    <br />
+                                    登録した<b>ブックマークレットの名前</b>{' '}
+                                    <small>(変更していない場合は "photohook")</small>{' '}
+                                    <b>の一部をアドレスバーに入力</b>
+                                    し、表示された候補の中から選択する
+                                </li>
+                                <li>
+                                    Safari など
+                                    <br />
+                                    <b>ブックマークの一覧</b>から選択する
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Photohook のページに移動するので<b>画像を選択してアップロード</b>する
+                            <br />
+                            <small>(初回は Google アカウントへのログインが必要です)</small>
+                        </li>
+                    </ol>
+                </section>
+            </React.Fragment>
+        )
+    }
+
     return (
-        <TopAppBarFixedAdjust css={{ maxWidth: 900, margin: 'auto' }}>
+        <React.Fragment>
             {snackbarMessages.map(text => (
                 <Snackbar
                     key={text}
@@ -170,6 +253,6 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                     </Button>
                 </Body1>
             </section>
-        </TopAppBarFixedAdjust>
+        </React.Fragment>
     )
 }

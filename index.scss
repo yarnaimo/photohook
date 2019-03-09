@@ -12,9 +12,14 @@
 @import '@material/react-radio/index.scss';
 @import 'material-colors/dist/colors.var.css';
 
+$primary: #e8585f;
+$secondary: #85c7c3;
+
 :root {
-    --mdc-theme-primary: #e8585f;
-    --mdc-theme-secondary: #85c7c3;
+    --primary: #e8585f;
+    --secondary: #85c7c3;
+    --mdc-theme-primary: var(--primary);
+    --mdc-theme-secondary: var(--secondary);
     // --mdc-theme-background: #fff;
     // --mdc-theme-surface: #fff;
     // --mdc-theme-error: #b00020;
@@ -76,6 +81,20 @@ html {
     max-width: 100vw;
     font-family: Ubuntu, sans-serif;
     overflow-y: scroll;
+    font-size: 15px;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5rem;
+    letter-spacing: 0.025em;
+    text-decoration: inherit;
+    text-transform: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-weight: 400;
 }
 
 body,
@@ -101,6 +120,30 @@ body {
 
 .mdc-list-item__text {
     pointer-events: none;
+}
+
+ul,
+ol {
+    margin-left: 1px;
+    border-left: var(--md-grey-100) 2px solid;
+}
+
+li,
+ol ul,
+ul ol,
+ul ul,
+ol ol {
+    margin: 0.375em 0;
+}
+
+code {
+    display: block;
+    border-radius: 4px;
+    padding: 3px 4px;
+    margin: 4px 0;
+    font-size: 0.9rem;
+    background-color: var(--md-grey-700);
+    color: white;
 }
 
 section {

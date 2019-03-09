@@ -13,6 +13,7 @@ export const SelectableImageGrid: React.FC<Props> = ({ urls, selection, onChange
     return (
         <ul
             css={{
+                border: 'none',
                 margin: '0 -8px',
                 display: 'grid',
                 padding: 0,
@@ -27,6 +28,7 @@ export const SelectableImageGrid: React.FC<Props> = ({ urls, selection, onChange
                     <li
                         key={i}
                         css={{
+                            margin: 0,
                             position: 'relative',
                             display: 'block',
                             cursor: 'pointer',
