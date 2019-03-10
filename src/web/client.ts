@@ -38,8 +38,8 @@ export interface User {
 
 export async function init(setUser: (user: User | null) => void) {
     await window.gapi.client.init({
-        apiKey: 'AIzaSyCNBx99CdVO7mGk5PZx7D9qQ395degSj4o',
-        clientId: '1071330928604-09ro04htm25fcdc66k9h4c4hb4ohimgo.apps.googleusercontent.com',
+        apiKey: process.env.GOOGLE_API_KEY,
+        clientId: process.env.GOOGLE_CLIENT_ID,
         // discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/some-api'],
         scope:
             'https://www.googleapis.com/auth/photoslibrary.appendonly https://www.googleapis.com/auth/photoslibrary.readonly.appcreateddata',
