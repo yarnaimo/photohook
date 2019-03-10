@@ -13,7 +13,7 @@
     "test": "NODE_ENV=test jest",
     "ts-node": "ts-node",
     "web": "parcel index.html",
-    "web:build": "NODE_ENV=production parcel build index.html"
+    "web:build": "NODE_ENV=production parcel build index.html -d public"
   },
   "husky": {
     "hooks": {
