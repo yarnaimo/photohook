@@ -2,9 +2,6 @@
   "name": "photohook",
   "alias": "photohook",
   "version": 2,
-  "engines": {
-    "node": "^11.11.0"
-  },
   "scale": {
     "sfo1": {
       "min": 1,
