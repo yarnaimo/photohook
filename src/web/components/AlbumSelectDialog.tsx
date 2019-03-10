@@ -12,7 +12,8 @@ import Radio, { NativeRadioControl } from '@material/react-radio'
 import TextField, { Input } from '@material/react-text-field'
 import { t } from '@yarnaimo/rain'
 import React, { useEffect, useMemo, useState } from 'react'
-import { getAlbums, postAlbum } from '../../server/route.albums'
+import { getAlbums } from '../../server/api/get-albums'
+import { postAlbum } from '../../server/api/post-album'
 import { useGlobalState } from '../state'
 
 interface Props {
@@ -47,7 +48,7 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
             return
         }
         user.client
-            .get('albums')
+            .get('get-albums')
             .json()
             .then(res => {
                 setAlbums(res as t.TypeOf<typeof getAlbums.resType>)
@@ -59,7 +60,7 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
             return
         }
         user.client
-            .post('albums', { json: { title } })
+            .post('post-album', { json: { title } })
             .json()
             .then(res => {
                 const newAlbum = res as t.TypeOf<typeof postAlbum.resType>

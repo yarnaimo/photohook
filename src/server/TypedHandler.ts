@@ -1,7 +1,10 @@
 import { is, t } from '@yarnaimo/rain'
+import { IncomingMessage, ServerResponse } from 'http'
+import { Settings } from 'luxon'
 import { json, RequestHandler, send } from 'micro'
-import { RouteHandler, ServerRequest, ServerResponse } from 'microrouter'
-import { authHeaders, AuthHeaders } from './utils.http'
+import { authHeaders, AuthHeaders, cors } from './utils.http'
+
+Settings.defaultZoneName = 'Asia/Tokyo'
 
 export interface TypedHandler<T1 extends t.Type<any>, T2 extends t.Type<any>>
     extends RequestHandler {
@@ -10,18 +13,25 @@ export interface TypedHandler<T1 extends t.Type<any>, T2 extends t.Type<any>>
 }
 
 export function typed<T1 extends t.Type<any>, T2 extends t.Type<any>>(
-    routeHandler: RouteHandler,
-    path: string,
+    method: string,
     reqType: T1 | null,
     resType: T2 | null,
     handler: (
-        req: ServerRequest,
+        req: IncomingMessage,
         res: ServerResponse,
         headers: AuthHeaders,
         validatedRequest: typeof reqType extends null ? undefined : t.TypeOf<T1>
     ) => Promise<t.TypeOf<T2> | void>
 ) {
-    const requestHandler = routeHandler(path, async (req, res) => {
+    const requestHandler = cors(async (req: IncomingMessage, res: ServerResponse) => {
+        if (req.method === 'OPTIONS') {
+            return send(res, 204)
+        }
+
+        if (method.toUpperCase() !== req.method!) {
+            return send(res, 405)
+        }
+
         const headers = authHeaders(req)
 
         if (is.error(headers)) {

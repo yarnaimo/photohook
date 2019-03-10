@@ -9,7 +9,7 @@ import { Body1, Caption } from '@material/react-typography'
 import { is, t } from '@yarnaimo/rain'
 import { DateTime } from 'luxon'
 import React, { useEffect, useMemo, useState } from 'react'
-import { postMediaItem } from '../server/route.mediaItems'
+import { postMediaItems } from '../server/api/post-mediaItems'
 import { AlbumSelectionDialog } from './components/AlbumSelectDialog'
 import { RoundedCheckbox } from './components/RoundedCheckbox'
 import { SelectableImageGrid } from './components/SelectableImageGrid'
@@ -51,8 +51,8 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
 
         setSnackbarMessages([...snackbarMessages, 'アップロードしています...'])
         const res = (await user.client
-            .post('mediaItems', { json: { albumId, urls: selectedUrls, dateTag } })
-            .json()) as t.TypeOf<typeof postMediaItem.resType>
+            .post('post-mediaItems', { json: { albumId, urls: selectedUrls, dateTag } })
+            .json()) as t.TypeOf<typeof postMediaItems.resType>
 
         setSnackbarMessages([...snackbarMessages, `${res.creationCount} 枚アップロードしました`])
     }

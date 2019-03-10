@@ -1,4 +1,4 @@
-import ky, { Ky } from 'ky'
+import ky, { Ky } from './ky'
 import { isDev, prefixUrl } from './utils'
 
 export const getAuth = () => window.gapi.auth2.getAuthInstance()

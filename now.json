@@ -2,7 +2,32 @@
   "name": "photohook",
   "alias": "photohook",
   "version": 2,
-  "env": {
-    "TZ": "Asia/Tokyo"
-  }
+  "build": {
+    "env": {
+      "SASS_PATH": "./node_modules",
+      "GOOGLE_API_KEY": "@photohook-google-api-key",
+      "GOOGLE_CLIENT_ID": "@photohook-google-client-id"
+    }
+  },
+  "builds": [
+    {
+      "src": "./src/server/api/*.ts",
+      "use": "@now/node@canary"
+    },
+    {
+      "src": "package.json",
+      "use": "@now/static-build",
+      "config": { "distDir": "public" }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/src/server/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ]
 }

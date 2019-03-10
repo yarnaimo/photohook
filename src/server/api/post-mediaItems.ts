@@ -1,15 +1,13 @@
 import { bufferFromUrlOrDataUrl, is, isnot, t } from '@yarnaimo/rain'
-import { post } from 'microrouter'
 import pLimit from 'p-limit'
-import { Album } from '../models/Album'
-import { toChunks } from '../utils'
-import { photos } from './photos'
-import { typed } from './TypedHandler'
-import { setDateTagIfNotExists } from './utils.exif'
+import { Album } from '../../models/Album'
+import { toChunks } from '../../utils'
+import { photos } from '../photos'
+import { typed } from '../TypedHandler'
+import { setDateTagIfNotExists } from '../utils.exif'
 
-export const postMediaItem = typed(
-    post,
-    '/mediaItems',
+export const postMediaItems = typed(
+    'post',
     t.type({
         albumId: t.union([Album.props.id, t.undefined]),
         urls: t.array(t.string),
@@ -78,4 +76,4 @@ export const CMediaItemsResponse = t.type({
     creationCount: t.number,
 })
 
-export const mediaItems = [postMediaItem]
+export default postMediaItems
