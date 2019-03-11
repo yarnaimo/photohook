@@ -11,6 +11,7 @@ import { DateTime } from 'luxon'
 import React, { useEffect, useMemo, useState } from 'react'
 import { postMediaItems } from '../server/api/post-mediaItems'
 import { AlbumSelectionDialog } from './components/AlbumSelectDialog'
+import { LI, OL, UL } from './components/List'
 import { RoundedCheckbox } from './components/RoundedCheckbox'
 import { SelectableImageGrid } from './components/SelectableImageGrid'
 import { block, section } from './css'
@@ -64,8 +65,6 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
     const codeRef = React.createRef<HTMLElement>()
     const code = ''
     function copy() {
-        console.log(codeRef.current)
-
         if (!codeRef.current) {
             return
         }
@@ -93,8 +92,8 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                 </section>
                 <section css={section}>
                     <h3>⭐️ ブックマークレットの登録方法</h3>
-                    <ol>
-                        <li>
+                    <OL>
+                        <LI>
                             下のボタンで<b>コードをコピー</b>する
                             <code ref={codeRef} css={{ overflow: 'auto' }}>
                                 javascript:{code}
@@ -102,44 +101,55 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                             <Button css={block} dense unelevated onClick={copy}>
                                 コピー
                             </Button>
-                        </li>
-                        <li>
+                        </LI>
+                        <LI>
                             このページを<b>ブックマークに登録</b>する
-                        </li>
-                        <li>
+                        </LI>
+                        <LI>
                             登録したブックマークの編集画面を開き、その{' '}
                             <b>URL を 1. でコピーしたコードに置き換えて保存</b>する
-                        </li>
-                    </ol>
+                        </LI>
+                    </OL>
                 </section>
                 <section css={section}>
                     <h3>ℹ️ 使い方</h3>
-                    <ol>
-                        <li>保存したい画像がある Web ページを開く</li>
-                        <li>
+                    <OL>
+                        <LI>保存したい画像がある Web ページを開く</LI>
+                        <LI>
                             登録したブックマークレットを起動する
-                            <ul>
-                                <li>
+                            <UL>
+                                <LI>
                                     Chrome など
                                     <br />
                                     登録した<b>ブックマークレットの名前</b>{' '}
                                     <small>(変更していない場合は "photohook")</small>{' '}
                                     <b>の一部をアドレスバーに入力</b>
                                     し、表示された候補の中から選択する
-                                </li>
-                                <li>
+                                </LI>
+                                <LI>
                                     Safari など
                                     <br />
                                     <b>ブックマークの一覧</b>から選択する
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
+                                </LI>
+                            </UL>
+                        </LI>
+                        <LI>
                             Photohook のページに移動するので<b>画像を選択してアップロード</b>する
                             <br />
                             <small>(初回は Google アカウントへのログインが必要です)</small>
-                        </li>
-                    </ol>
+                        </LI>
+                    </OL>
+                </section>
+                <section css={section}>
+                    <h3>プライバシーポリシー</h3>
+                    <p>
+                        Photohook ではアクセス状況を把握するため Google Analytics
+                        を使用しています。データは匿名で収集されており、個人を特定するものではありません。詳しくは
+                        <a target="_blank" href="https://www.google.com/analytics/terms/jp.html">
+                            こちら
+                        </a>
+                        をご覧ください。
+                    </p>
                 </section>
             </React.Fragment>
         )

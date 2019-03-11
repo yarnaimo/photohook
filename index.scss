@@ -72,9 +72,16 @@ $secondary: #85c7c3;
 // @import 'node_modules/@material/chips/variables';
 // @import 'node_modules/@material/shape/mixins';
 
-* {
+*,
+::before,
+::after {
     box-sizing: border-box;
     outline: none;
+}
+
+body [class^='mdc-']:not(.material-icons),
+body [class*=' mdc-']:not(.material-icons) {
+    font-family: Ubuntu, sans-serif;
 }
 
 html {
@@ -84,7 +91,7 @@ html {
     font-size: 15px;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    line-height: 1.5rem;
+    line-height: 1.6;
     letter-spacing: 0.025em;
     text-decoration: inherit;
     text-transform: inherit;
@@ -95,6 +102,35 @@ h2,
 h3,
 h4 {
     font-weight: 400;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+    // line-height: 1.5;
+    margin: 0.75em 0;
+}
+
+h1 {
+    font-size: 2rem;
+    margin: 0.67em 0;
+}
+h2 {
+    font-size: 1.5rem;
+}
+h3 {
+    font-size: 1.17rem;
+}
+h4 {
+    font-size: 1rem;
+}
+h5 {
+    font-size: 0.83rem;
+}
+h6 {
+    font-size: 0.67rem;
 }
 
 body,
@@ -122,28 +158,28 @@ body {
     pointer-events: none;
 }
 
-ul,
-ol {
-    margin-left: 1px;
-    border-left: var(--md-grey-100) 2px solid;
+// ul,
+// ol {
+//     margin-left: 1px;
+//     border-left: var(--md-grey-100) 2px solid;
 
-    @media (max-width: 599px) {
-        padding-left: 32px;
-    }
-}
+//     @media (max-width: 599px) {
+//         padding-left: 32px;
+//     }
+// }
 
-li,
-ol ul,
-ul ol,
-ul ul,
-ol ol {
-    margin: 0.4375em 0;
-}
+// li,
+// ol ul,
+// ul ol,
+// ul ul,
+// ol ol {
+//     margin: 0.4375em 0;
+// }
 
 code {
     display: block;
     border-radius: 4px;
-    padding: 3px 4px;
+    padding: 4px;
     margin: 4px 0;
     font-size: 0.9rem;
     background-color: var(--md-grey-700);
