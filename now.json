@@ -23,7 +23,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/src/server/api/$1"
+      "dest": "/src/server/api/$1.ts"
     },
     {
       "src": "/(.*)",
