@@ -15,7 +15,7 @@
       "use": "@now/node@canary"
     },
     {
-      "src": "package.json",
+      "src": "build-web.sh",
       "use": "@now/static-build",
       "config": { "distDir": "public" }
     }

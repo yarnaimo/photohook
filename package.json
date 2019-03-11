@@ -9,11 +9,11 @@
     "build": "tsc",
     "debug": "node --inspect -r ts-node/register/transpile-only node_modules/.bin/micro-dev src/server/main.ts",
     "dev": "ts-node --transpileOnly node_modules/.bin/micro-dev src/server/main.ts",
-    "now-build": "NODE_ENV=production parcel build index.html -d public",
     "start": "NODE_ENV=production micro dist/server/main.js",
     "test": "NODE_ENV=test jest",
     "ts-node": "ts-node",
-    "web": "parcel index.html"
+    "web": "parcel index.html",
+    "web:build": "NODE_ENV=production parcel build index.html -d public"
   },
   "husky": {
     "hooks": {
