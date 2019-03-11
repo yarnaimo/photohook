@@ -11,10 +11,11 @@ import { DateTime } from 'luxon'
 import React, { useEffect, useMemo, useState } from 'react'
 import { postMediaItems } from '../server/api/post-mediaItems'
 import { AlbumSelectionDialog } from './components/AlbumSelectDialog'
-import { LI, OL, UL } from './components/List'
+import { LI, OL } from './components/List'
 import { RoundedCheckbox } from './components/RoundedCheckbox'
 import { SelectableImageGrid } from './components/SelectableImageGrid'
 import { block, section } from './css'
+import ky from './ky'
 import { useGlobalState } from './state'
 import { extractImageUrlsFromLocation } from './utils'
 
@@ -63,7 +64,15 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
     const [snackbarMessages, setSnackbarMessages] = useState([] as string[])
 
     const codeRef = React.createRef<HTMLElement>()
-    const code = ''
+    const [code, setCode] = useState('')
+    useEffect(() => {
+        const codeUrl =
+            'https://gist.githubusercontent.com/yarnaimo/151e59ef7452cfdc8706b5ffb018cb06/raw/2f206b140f96770c60a3d9b3c9fda0dabc9588c1/photohook-bookmarklet.js'
+        ky.get(codeUrl, { mode: 'cors' })
+            .text()
+            .then(str => setCode(str))
+    }, [])
+
     function copy() {
         if (!codeRef.current) {
             return
@@ -95,9 +104,11 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                     <OL>
                         <LI>
                             下のボタンで<b>コードをコピー</b>する
-                            <code ref={codeRef} css={{ overflow: 'auto' }}>
-                                javascript:{code}
-                            </code>
+                            <pre>
+                                <code ref={codeRef} css={{ overflow: 'auto' }}>
+                                    {code}
+                                </code>
+                            </pre>
                             <Button css={block} dense unelevated onClick={copy}>
                                 コピー
                             </Button>
@@ -116,25 +127,17 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                     <OL>
                         <LI>保存したい画像がある Web ページを開く</LI>
                         <LI>
-                            登録したブックマークレットを起動する
-                            <UL>
-                                <LI>
-                                    Chrome など
-                                    <br />
-                                    登録した<b>ブックマークレットの名前</b>{' '}
-                                    <small>(変更していない場合は "photohook")</small>{' '}
-                                    <b>の一部をアドレスバーに入力</b>
-                                    し、表示された候補の中から選択する
-                                </LI>
-                                <LI>
-                                    Safari など
-                                    <br />
-                                    <b>ブックマークの一覧</b>から選択する
-                                </LI>
-                            </UL>
+                            <b>ブックマークの一覧から Photohook を選択</b>する
+                            <br />
+                            <small>
+                                Chrome などでは、
+                                <b>ブックマークレットの名前の一部をアドレスバーに入力</b>
+                                し、表示された候補の中から選択することもできます
+                            </small>
                         </LI>
                         <LI>
-                            Photohook のページに移動するので<b>画像を選択してアップロード</b>する
+                            Photohook が新しいタブで開かれるので<b>画像を選択してアップロード</b>
+                            する
                             <br />
                             <small>(初回は Google アカウントへのログインが必要です)</small>
                         </LI>
