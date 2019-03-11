@@ -46,7 +46,22 @@ export const postMediaItems = typed(
         }
 
         const limit = pLimit(8)
-        const tasks = v.urls.map(url => limit(() => createNewMediaItem(url)))
+        const tasks = v.urls
+            .map(url => url.trim())
+            .map(url => {
+                const m1 = url.match(/^https:\/\/pbs.twimg.com\/media\/[\w-]+\.[a-z]+/m)
+                if (m1) {
+                    return m1[0] + ':orig'
+                }
+
+                const m2 = url.match(/^https:\/\/pbs.twimg.com\/media\/[\w-]+\?format=\w+/m)
+                if (m2) {
+                    return m2[0] + '&name=orig'
+                }
+
+                return url
+            })
+            .map(url => limit(() => createNewMediaItem(url)))
 
         const newMediaItems = (await Promise.all(tasks)).filter(isnot.nullish)
 
