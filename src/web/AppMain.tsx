@@ -54,9 +54,12 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
         setSnackbarMessages([...snackbarMessages, 'アップロードしています...'])
         const res = (await user.client
             .post('post-mediaItems', { json: { albumId, urls: selectedUrls, dateTag } })
-            .json()) as t.TypeOf<typeof postMediaItems.resType>
+            .json()
+            .catch(() => {
+                setSnackbarMessages([...snackbarMessages, `アップロードに失敗しました`])
+            })) as t.TypeOf<typeof postMediaItems.resType>
 
-        setSnackbarMessages([...snackbarMessages, `${res.creationCount} 枚アップロードしました`])
+        setSnackbarMessages([...snackbarMessages, `✔ ${res.creationCount} 枚アップロードしました`])
     }
 
     const [dialogState, setDialogState] = useState(false)
@@ -78,6 +81,8 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
             return
         }
 
+        setSnackbarMessages([...snackbarMessages, '✔ コピーしました'])
+
         const range = document.createRange()
         range.selectNodeContents(codeRef.current)
 
@@ -90,9 +95,19 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
         selection.removeAllRanges()
     }
 
+    const snackbar = snackbarMessages.map(text => (
+        <Snackbar
+            key={text}
+            // open={uploadingSnackbar}
+            onClose={() => setSnackbarMessages(snackbarMessages.filter(m => m !== text))}
+            message={text}
+        />
+    ))
+
     if (!urls.length) {
         return (
             <React.Fragment>
+                {snackbar}
                 <section css={section}>
                     <p>
                         Photohook は Web ページに含まれる画像をブックマークレット経由で{' '}
@@ -160,14 +175,7 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
 
     return (
         <React.Fragment>
-            {snackbarMessages.map(text => (
-                <Snackbar
-                    key={text}
-                    // open={uploadingSnackbar}
-                    onClose={() => setSnackbarMessages(snackbarMessages.filter(m => m !== text))}
-                    message={text}
-                />
-            ))}
+            {snackbar}
 
             <AlbumSelectionDialog state={dialogState} setState={setDialogState} upload={upload} />
 
