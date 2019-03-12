@@ -148,9 +148,9 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
                                     onChange={e =>
                                         setTitleInput(e.currentTarget.value)
                                     }
-                                    onKeyPress={e => {
+                                    onKeyDown={e => {
+                                        e.stopPropagation()
                                         if (e.key === 'Enter') {
-                                            e.preventDefault()
                                             createAlbum()
                                         }
                                     }}
