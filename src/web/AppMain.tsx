@@ -149,12 +149,12 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                                     Safari など
                                     <br />
                                     <b>ブックマークの一覧から Photohook を選択</b>する
-                                <LI/>
+                                </LI>
                                 <LI>
                                     Chrome など
                                     <br />
                                     登録した<b>ブックマークレットの名前の一部をアドレスバーに入力</b>し、表示された候補の中から選択する
-                                <LI/>
+                                </LI>
                             </UL>
                         </LI>
                         <LI>
