@@ -70,10 +70,10 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
     const [code, setCode] = useState('')
     useEffect(() => {
         const codeUrl =
-            'https://gist.githubusercontent.com/yarnaimo/151e59ef7452cfdc8706b5ffb018cb06/raw/2f206b140f96770c60a3d9b3c9fda0dabc9588c1/photohook-bookmarklet.js'
+            'https://gist.githubusercontent.com/yarnaimo/151e59ef7452cfdc8706b5ffb018cb06/raw/photohook-bookmarklet.js'
         ky.get(codeUrl, { mode: 'cors' })
             .text()
-            .then(str => setCode(str))
+            .then(str => setCode(str.replace(/\s*\n\s*/g, ' ')))
     }, [])
 
     function copy() {
@@ -114,6 +114,7 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                         <b>Google フォトに一括アップロード</b>するツールです。
                     </p>
                 </section>
+
                 <section css={section}>
                     <h3>⭐️ ブックマークレットの登録方法</h3>
                     <OL>
@@ -134,10 +135,12 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                         <LI>
                             登録したブックマークの編集画面を開き、その{' '}
                             <b>URL を 1. でコピーしたコードに置き換えて保存</b>する
+                            <br />
                             <small>(名前は必要に応じて変更してください)</small>
                         </LI>
                     </OL>
                 </section>
+
                 <section css={section}>
                     <h3>ℹ️ 使い方</h3>
                     <OL>
@@ -153,7 +156,9 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                                 <LI>
                                     Chrome など
                                     <br />
-                                    登録した<b>ブックマークレットの名前の一部をアドレスバーに入力</b>し、表示された候補の中から選択する
+                                    登録した
+                                    <b>ブックマークレットの名前の一部をアドレスバーに入力</b>
+                                    し、表示された候補の中から選択する
                                 </LI>
                             </UL>
                         </LI>
@@ -165,16 +170,34 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                         </LI>
                     </OL>
                 </section>
+
                 <section css={section}>
                     <h3>プライバシーポリシー</h3>
                     <p>
-                        Photohook ではアクセス状況を把握するため Google Analytics
+                        Photohook ではアクセス状況を把握するため <b>Google Analytics</b>{' '}
                         を使用しています。データは匿名で収集されており、個人を特定するものではありません。詳しくは
                         <a target="_blank" href="https://www.google.com/analytics/terms/jp.html">
                             こちら
                         </a>
                         をご覧ください。
                     </p>
+                </section>
+
+                <section css={section}>
+                    <h3>詳細情報</h3>
+                    <p>Photohook は Now 2.0 (ZEIT) で稼働しています。</p>
+                    <UL>
+                        <LI>
+                            <a href="https://github.com/yarnaimo/photohook">
+                                GitHub - yarnaimo/photohook
+                            </a>
+                        </LI>
+                        <LI>
+                            <a href="https://gist.github.com/yarnaimo/151e59ef7452cfdc8706b5ffb018cb06">
+                                Gist - ブックマークレット
+                            </a>
+                        </LI>
+                    </UL>
                 </section>
             </React.Fragment>
         )
