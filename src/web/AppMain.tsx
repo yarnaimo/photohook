@@ -11,7 +11,7 @@ import { DateTime } from 'luxon'
 import React, { useEffect, useMemo, useState } from 'react'
 import { postMediaItems } from '../server/api/post-mediaItems'
 import { AlbumSelectionDialog } from './components/AlbumSelectDialog'
-import { LI, OL } from './components/List'
+import { LI, OL, UL } from './components/List'
 import { RoundedCheckbox } from './components/RoundedCheckbox'
 import { SelectableImageGrid } from './components/SelectableImageGrid'
 import { block, section } from './css'
@@ -134,6 +134,7 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                         <LI>
                             登録したブックマークの編集画面を開き、その{' '}
                             <b>URL を 1. でコピーしたコードに置き換えて保存</b>する
+                            <small>(名前は必要に応じて変更してください)</small>
                         </LI>
                     </OL>
                 </section>
@@ -142,13 +143,19 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
                     <OL>
                         <LI>保存したい画像がある Web ページを開く</LI>
                         <LI>
-                            <b>ブックマークの一覧から Photohook を選択</b>する
-                            <br />
-                            <small>
-                                Chrome などでは、
-                                <b>ブックマークレットの名前の一部をアドレスバーに入力</b>
-                                し、表示された候補の中から選択することもできます
-                            </small>
+                            ブックマークレットを起動する
+                            <UL>
+                                <LI>
+                                    Safari など
+                                    <br />
+                                    <b>ブックマークの一覧から Photohook を選択</b>する
+                                <LI/>
+                                <LI>
+                                    Chrome など
+                                    <br />
+                                    登録した<b>ブックマークレットの名前の一部をアドレスバーに入力</b>し、表示された候補の中から選択する
+                                <LI/>
+                            </UL>
                         </LI>
                         <LI>
                             Photohook が新しいタブで開かれるので<b>画像を選択してアップロード</b>
