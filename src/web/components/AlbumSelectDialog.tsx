@@ -51,7 +51,11 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
             .get('get-albums')
             .json()
             .then(res => {
-                setAlbums(res as t.TypeOf<typeof getAlbums.resType>)
+                const v = res as t.TypeOf<typeof getAlbums.resType>
+                if (!v) {
+                    return
+                }
+                setAlbums(v)
             })
     }, [user])
 
@@ -145,9 +149,7 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
                                     placeholder="タイトルを入力"
                                     value={titleInput}
                                     ref={((ref: any) => (titleInputRef = ref)) as any}
-                                    onChange={e =>
-                                        setTitleInput(e.currentTarget.value)
-                                    }
+                                    onChange={e => setTitleInput(e.currentTarget.value)}
                                     onKeyDown={e => {
                                         e.stopPropagation()
                                         if (e.key === 'Enter') {
