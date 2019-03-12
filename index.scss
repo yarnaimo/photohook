@@ -16,8 +16,8 @@ $mdc-theme-secondary: #85c7c3;
 @import 'material-colors/dist/colors.var.css';
 
 :root {
-    --mdc-theme-primary: $mdc-theme-primary;
-    --mdc-theme-secondary: $mdc-theme-secondary;
+    --mdc-theme-primary: #{$mdc-theme-primary};
+    --mdc-theme-secondary: #{$mdc-theme-secondary};
     // --mdc-theme-background: #fff;
     // --mdc-theme-surface: #fff;
     // --mdc-theme-error: #b00020;
