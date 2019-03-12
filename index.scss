@@ -1,3 +1,6 @@
+$mdc-theme-primary: #e8585f;
+$mdc-theme-secondary: #85c7c3;
+
 // @import 'material-components-web/dist/material-components-web.min.css';
 @import '@material/react-drawer/index.scss';
 @import '@material/react-list/index.scss';
@@ -12,14 +15,9 @@
 @import '@material/react-radio/index.scss';
 @import 'material-colors/dist/colors.var.css';
 
-$primary: #e8585f;
-$secondary: #85c7c3;
-
 :root {
-    --primary: #e8585f;
-    --secondary: #85c7c3;
-    --mdc-theme-primary: var(--primary);
-    --mdc-theme-secondary: var(--secondary);
+    --mdc-theme-primary: $mdc-theme-primary;
+    --mdc-theme-secondary: $mdc-theme-secondary;
     // --mdc-theme-background: #fff;
     // --mdc-theme-surface: #fff;
     // --mdc-theme-error: #b00020;
