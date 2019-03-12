@@ -136,6 +136,9 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
                                 fullWidth
                                 trailingIcon={<MaterialIcon icon="done" />}
                                 onTrailingIconSelect={() => {
+                                    if (!titleInput.trim().length) {
+                                        return
+                                    }
                                     setTitleInputState(false)
                                     // setSnackbarState(true)
                                     createAlbum(titleInput)
@@ -147,7 +150,6 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
                                     value={titleInput}
                                     ref={((ref: any) => (titleInputRef = ref)) as any}
                                     onChange={e =>
-                                        titleInput.trim().length &&
                                         setTitleInput(e.currentTarget.value)
                                     }
                                 />
