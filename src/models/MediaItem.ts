@@ -2,7 +2,7 @@ import { t } from '@yarnaimo/rain'
 
 export const MediaItem = t.type({
     id: t.string,
-    productUrl: t.string,
+    productUrl: t.union([t.string, t.undefined]),
     mediaMetadata: t.any,
 })
 

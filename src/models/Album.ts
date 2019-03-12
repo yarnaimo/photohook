@@ -3,12 +3,12 @@ import { t } from '@yarnaimo/rain'
 export const Album = t.type({
     id: t.string,
     title: t.string,
-    productUrl: t.string,
-    coverPhotoBaseUrl: t.string,
+    productUrl: t.union([t.string, t.undefined]),
+    coverPhotoBaseUrl: t.union([t.string, t.undefined]),
 })
 
 export const AlbumList = t.type({
-    albums: t.array(Album),
+    albums: t.union([t.array(Album), t.undefined]),
     nextPageToken: t.union([t.string, t.undefined]),
 })
 
