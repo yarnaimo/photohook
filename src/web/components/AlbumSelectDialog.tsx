@@ -55,19 +55,6 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
             })
     }, [user])
 
-    function createAlbum(title: string) {
-        if (!user) {
-            return
-        }
-        user.client
-            .post('post-album', { json: { title } })
-            .json()
-            .then(res => {
-                const newAlbum = res as t.TypeOf<typeof postAlbum.resType>
-                setAlbums([...albums, newAlbum])
-            })
-    }
-
     const [selectedId, setSelectedId] = useState<string | undefined>(undefined)
 
     const [titleInput, setTitleInput] = useState('')
@@ -79,6 +66,22 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
             titleInputRef.inputElement.focus()
         }
     }, [titleInputState])
+
+    const createAlbum = () => {
+        if (!user || !titleInput.trim().length) {
+            return
+        }
+        setTitleInputState(false)
+        // setSnackbarState(true)
+
+        user.client
+            .post('post-album', { json: { title: titleInput } })
+            .json()
+            .then(res => {
+                const newAlbum = res as t.TypeOf<typeof postAlbum.resType>
+                setAlbums([...albums, newAlbum])
+            })
+    }
 
     const [snackbarState, setSnackbarState] = useState(false)
 
@@ -135,11 +138,7 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
                                 label="タイトルを入力"
                                 fullWidth
                                 trailingIcon={<MaterialIcon icon="done" />}
-                                onTrailingIconSelect={() => {
-                                    setTitleInputState(false)
-                                    // setSnackbarState(true)
-                                    createAlbum(titleInput)
-                                }}
+                                onTrailingIconSelect={createAlbum}
                             >
                                 <Input
                                     tabIndex={0}
@@ -147,9 +146,14 @@ export const AlbumSelectionDialog: React.FC<Props> = props => {
                                     value={titleInput}
                                     ref={((ref: any) => (titleInputRef = ref)) as any}
                                     onChange={e =>
-                                        titleInput.trim().length &&
                                         setTitleInput(e.currentTarget.value)
                                     }
+                                    onKeyDown={e => {
+                                        e.stopPropagation()
+                                        if (e.key === 'Enter') {
+                                            createAlbum()
+                                        }
+                                    }}
                                 />
                             </TextField>
                         </ListItem>
