@@ -1,9 +1,9 @@
 import { is, t } from '@yarnaimo/rain'
 import { PathReporter } from 'io-ts/lib/PathReporter'
 import { send } from 'micro'
-import { AlbumCreationResponse } from '../../models/Album'
-import { photos } from '../photos'
-import { typed } from '../TypedHandler'
+import { AlbumCreationResponse } from '../../src/models/Album'
+import { photos } from './utils/photos'
+import { typed } from './utils/TypedHandler'
 
 export const postAlbum = typed(
     'post',

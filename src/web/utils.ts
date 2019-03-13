@@ -1,14 +1,23 @@
-export function extractImageUrlsFromLocation(location: Location) {
-    const url = new URL(location.href)
-    const targetsString = url.searchParams.get('urls')
+import { LZString } from './lz'
 
-    if (!targetsString) {
-        return []
+export function extractImageUrlsFromLocation(location: Location) {
+    const currentUrl = new URL(location.href)
+    const urlsCompressed = currentUrl.searchParams.get('urls_c')
+    const urls = currentUrl.searchParams.get('urls')
+
+    if (urlsCompressed) {
+        return LZString.decompressFromEncodedURIComponent(urlsCompressed).split(' ')
     }
 
-    return [...new Set(targetsString.split(',').filter(u => u))]
+    if (urls) {
+        return urls.split(',')
+    }
+
+    return []
 }
 
 export const isDev = location.hostname === 'localhost'
 
-export const prefixUrl = isDev ? 'http://localhost:3000/api' : '/api'
+export const prefixUrl = isDev
+    ? 'http://localhost:5000'
+    : 'https://asia-northeast1-photohook-app.cloudfunctions.net'

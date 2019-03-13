@@ -1,10 +1,10 @@
 import { bufferFromUrlOrDataUrl, is, isnot, t } from '@yarnaimo/rain'
 import pLimit from 'p-limit'
-import { Album } from '../../models/Album'
-import { toChunks } from '../../utils'
-import { photos } from '../photos'
-import { typed } from '../TypedHandler'
-import { setDateTagIfNotExists } from '../utils.exif'
+import { Album } from '../../src/models/Album'
+import { setDateTagIfNotExists } from './utils/exif'
+import { toChunks } from './utils/main'
+import { photos } from './utils/photos'
+import { typed } from './utils/TypedHandler'
 
 export const postMediaItems = typed(
     'post',
@@ -21,10 +21,15 @@ export const postMediaItems = typed(
             const dataToUpload = await bufferFromUrlOrDataUrl(url)
 
             if (is.error(dataToUpload)) {
+                console.error(dataToUpload)
                 return
             }
 
-            const bufferToUpload = setDateTagIfNotExists(dataToUpload.buffer, v.dateTag)
+            let bufferToUpload: Buffer | null = setDateTagIfNotExists(
+                dataToUpload.buffer,
+                v.dateTag
+            )
+            delete dataToUpload.buffer
 
             const uploadedItem = await photos.uploadItem(
                 headers,
@@ -32,8 +37,10 @@ export const postMediaItems = typed(
                 url,
                 dataToUpload.mimetype
             )
+            bufferToUpload = null
 
             if (is.error(uploadedItem)) {
+                console.error(uploadedItem)
                 return
             }
 
@@ -74,13 +81,9 @@ export const postMediaItems = typed(
                 continue
             }
 
-            creationResponse.value.newMediaItemResults.forEach(result => {
-                if (!result.mediaItem) {
-                    return
-                }
-
-                creationCount++
-            })
+            creationCount =
+                creationCount +
+                creationResponse.value.newMediaItemResults.filter(result => result.mediaItem).length
         }
 
         return { creationCount }

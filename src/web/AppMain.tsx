@@ -9,7 +9,7 @@ import { Body1, Caption } from '@material/react-typography'
 import { is, t } from '@yarnaimo/rain'
 import { DateTime } from 'luxon'
 import React, { useEffect, useMemo, useState } from 'react'
-import { postMediaItems } from '../server/api/post-mediaItems'
+import { postMediaItems } from '../../functions/src'
 import { AlbumSelectionDialog } from './components/AlbumSelectDialog'
 import { LI, OL, UL } from './components/List'
 import { RoundedCheckbox } from './components/RoundedCheckbox'
@@ -53,7 +53,7 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
 
         setSnackbarMessages([...snackbarMessages, 'アップロードしています...'])
         const res = (await user.client
-            .post('post-mediaItems', { json: { albumId, urls: selectedUrls, dateTag } })
+            .post('postMediaItems', { json: { albumId, urls: selectedUrls, dateTag } })
             .json()
             .catch(() => {
                 setSnackbarMessages([...snackbarMessages, `アップロードに失敗しました`])

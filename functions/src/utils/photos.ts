@@ -1,10 +1,10 @@
 import { asError, got, t } from '@yarnaimo/rain'
 import { DateTime } from 'luxon'
 import { extension } from 'mime-types'
-import { AlbumCreationResponse, AlbumList } from '../models/Album'
-import { MediaItemCreationRequest, MediaItemCreationResponse } from '../models/MediaItem'
-import { filenamifyUrl } from './utils'
-import { AuthHeaders } from './utils.http'
+import { AlbumCreationResponse, AlbumList } from '../../../src/models/Album'
+import { MediaItemCreationRequest, MediaItemCreationResponse } from '../../../src/models/MediaItem'
+import { AuthHeaders } from './http'
+import { filenamifyUrl } from './main'
 
 const baseUrl = 'https://photoslibrary.googleapis.com/v1'
 const photosClient = got.extend({

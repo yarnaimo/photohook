@@ -13,4 +13,4 @@ export function authHeaders(req: IncomingMessage) {
     return { authorization: req.headers.authorization as string }
 }
 
-export const cors = microCors({ origin: 'http://localhost:1234' })
+export const cors = microCors({ origin: '*' })

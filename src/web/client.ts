@@ -58,6 +58,7 @@ export async function init(setUser: (user: User | null) => void) {
 
         setUser({
             client: ky.extend({
+                timeout: 60000,
                 prefixUrl,
                 headers: { authorization: `Bearer ${authResponse.access_token}` },
                 mode: isDev ? 'cors' : undefined,

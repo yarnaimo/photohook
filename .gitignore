@@ -22,6 +22,7 @@ Thumbs.db
 .cache
 .config
 .env
+.env.production
 .firebase
 .nuxt
 config

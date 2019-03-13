@@ -1,0 +1,35 @@
+{
+  "name": "functions",
+  "private": true,
+  "main": "lib/functions/src/index.js",
+  "scripts": {
+    "build": "tsc",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "serve": "yarn build && firebase serve --only functions",
+    "shell": "yarn build && firebase functions:shell",
+    "start": "yarn shell"
+  },
+  "dependencies": {
+    "@yarnaimo/rain": "^0.2.7",
+    "filenamify-url": "^1.0.0",
+    "firebase-admin": "~7.0.0",
+    "firebase-functions": "^2.2.0",
+    "micro": "^9.3.3",
+    "micro-cors": "^0.1.1",
+    "mime-types": "^2.1.22",
+    "modify-exif": "^0.0.1",
+    "p-limit": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/filenamify-url": "^1.0.0",
+    "@types/got": "^9.4.1",
+    "@types/micro": "^7.3.3",
+    "@types/micro-cors": "^0.1.0",
+    "@types/mime-types": "^2.1.0",
+    "@yarnaimo/tss": "^0.0.2"
+  },
+  "engines": {
+    "node": "8"
+  }
+}
