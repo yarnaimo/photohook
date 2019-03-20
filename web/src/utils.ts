@@ -19,5 +19,5 @@ export function extractImageUrlsFromLocation(location: Location) {
 export const isDev = location.hostname === 'localhost'
 
 export const prefixUrl = isDev
-    ? 'http://localhost:5000'
+    ? 'http://localhost:5000/photohook-app/us-central1'
     : 'https://asia-northeast1-photohook-app.cloudfunctions.net'

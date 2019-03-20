@@ -33,7 +33,7 @@ export const postMediaItems = typed(
 
             const uploadedItem = await photos.uploadItem(
                 headers,
-                bufferToUpload,
+                bufferToUpload!,
                 url,
                 dataToUpload.mimetype
             )

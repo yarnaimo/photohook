@@ -1,20 +1,18 @@
 {
   "name": "photohook",
   "version": "0.0.0",
+  "private": true,
   "repository": "github:yarnaimo/photohook",
   "license": "MIT",
   "author": "yamaimo <yarnaimo@gmail.com>",
-  "main": "dist/index.js",
+  "workspaces": [
+    "functions",
+    "web"
+  ],
   "scripts": {
     "build": "tsc",
-    "debug": "node --inspect -r ts-node/register/transpile-only node_modules/.bin/micro-dev src/server/main.ts",
-    "dev": "ts-node --transpileOnly node_modules/.bin/micro-dev src/server/main.ts",
-    "start": "NODE_ENV=production micro dist/server/main.js",
     "test": "NODE_ENV=test jest",
-    "ts-node": "ts-node",
-    "web": "parcel index.html",
-    "web:build": "NODE_ENV=production parcel build index.html -d public",
-    "web:deploy": "yarn web:build && firebase deploy --only hosting"
+    "ts-node": "ts-node"
   },
   "husky": {
     "hooks": {
@@ -31,62 +29,10 @@
       "git add"
     ]
   },
-  "browserslist": [
-    "since 2018"
-  ],
   "dependencies": {
-    "@emotion/babel-preset-css-prop": "^10.0.7",
-    "@emotion/core": "^10.0.7",
-    "@material/react-button": "^0.10.0",
-    "@material/react-card": "^0.10.0",
-    "@material/react-checkbox": "^0.10.0",
-    "@material/react-chips": "^0.10.0",
-    "@material/react-dialog": "^0.10.0",
-    "@material/react-drawer": "^0.10.0",
-    "@material/react-fab": "^0.10.0",
-    "@material/react-floating-label": "^0.8.0",
-    "@material/react-icon-button": "^0.10.0",
-    "@material/react-layout-grid": "^0.8.0",
-    "@material/react-line-ripple": "^0.8.0",
-    "@material/react-linear-progress": "^0.8.0",
-    "@material/react-list": "^0.10.0",
-    "@material/react-material-icon": "^0.10.0",
-    "@material/react-menu-surface": "^0.8.0",
-    "@material/react-notched-outline": "^0.8.0",
-    "@material/react-radio": "^0.10.0",
-    "@material/react-ripple": "^0.10.0",
-    "@material/react-select": "^0.8.0",
-    "@material/react-snackbar": "^0.10.0",
-    "@material/react-switch": "^0.10.0",
-    "@material/react-tab": "^0.10.0",
-    "@material/react-tab-bar": "^0.10.0",
-    "@material/react-tab-indicator": "^0.8.0",
-    "@material/react-tab-scroller": "^0.8.0",
-    "@material/react-text-field": "^0.10.0",
-    "@material/react-top-app-bar": "^0.9.0",
-    "@material/react-typography": "^0.8.0",
-    "@material/snackbar": "^0.44.0",
-    "@yarnaimo/rain": "^0.2.6",
-    "firebase": "^5.8.6",
-    "material-colors": "^1.2.6",
-    "react": "^16.8.3",
-    "react-dom": "^16.8.3",
-    "react-hooks-global-state": "^0.7.0"
+    "@yarnaimo/rain": "latest"
   },
   "devDependencies": {
-    "@babel/core": "^7.3.3",
-    "@babel/preset-env": "^7.3.1",
-    "@babel/preset-react": "^7.0.0",
-    "@types/babel__core": "^7.1.0",
-    "@types/parcel-bundler": "^1.10.1",
-    "@types/react": "^16.8.4",
-    "@types/react-dom": "^16.8.2",
-    "@types/react-hot-loader": "^4.1.0",
-    "@types/sass": "^1.16.0",
-    "@yarnaimo/tss": "^0.0.2",
-    "parcel-bundler": "^1.11.0",
-    "parcel-plugin-bundle-visualiser": "^1.2.0",
-    "react-hot-loader": "^4.7.1",
-    "sass": "^1.17.2"
+    "@yarnaimo/tss": "latest"
   }
 }

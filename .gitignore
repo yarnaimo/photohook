@@ -27,7 +27,7 @@ Thumbs.db
 .nuxt
 config
 coverage
-dist/**/*
+dist
 node_modules
 public
 sw.*

@@ -1,3 +1,3 @@
-export * from './get-albums'
-export * from './post-album'
-export * from './post-mediaItems'
+export * from './getAlbums'
+export * from './postAlbum'
+export * from './postMediaItems'

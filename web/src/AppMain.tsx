@@ -185,7 +185,7 @@ export const Main: React.FC<{ login: () => Promise<void> }> = props => {
 
                 <section css={section}>
                     <h3>詳細情報</h3>
-                    <p>Photohook は Now 2.0 (ZEIT) で稼働しています。</p>
+                    <p>Photohook は Firebase で稼働しています。</p>
                     <UL>
                         <LI>
                             <a href="https://github.com/yarnaimo/photohook">

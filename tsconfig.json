@@ -1,13 +1,13 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "target": "es2018",
+    "target": "es2015",
     "module": "commonjs",
     "moduleResolution": "node",
     "lib": [
       "dom",
       "dom.iterable",
-      "es2018"
+      "es2015"
     ],
     "jsx": "react",
     "declaration": true,
@@ -19,7 +19,8 @@
     "paths": {
       "*": [
         "node_modules/@types/*",
-        "src/@types/*"
+        "src/@types/*",
+        "functions/src/@types/*"
       ]
     },
     "types": [
@@ -31,7 +32,9 @@
     "experimentalDecorators": true
   },
   "include": [
-    "src/**/*"
+    "src",
+    "functions/src",
+    "web/src"
   ],
   "exclude": [
     "node_modules"
